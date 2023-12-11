@@ -1,47 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyledButton, StyledForm, StyledInput, StyledLabel } from './ContactForm.styled'
 
-export class ContactForm extends React.Component {
-  state = {
+export const ContactForm = ({handleAddContact}) => {
+  const [state, setState] = useState({
     name: '',
-    number:''
-  }
+    number: ''
+  })
 
-  handleChangeInput = ({ target }) => {
-      const { name, value } = target;
-      this.setState({ [name]: value })
+  const handleChangeInput = ({ target }) => {
+    const { name, value } = target;
+    setState({ ...state, [name]: value })
 	}
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    this.props.handleAddContact(this.state);
+    handleAddContact(state);
     
-    this.setState({
+    setState({
       name: '',
       number: '',
 		})
   }
+  
 
-  render() {
-    const { name, number } = this.state;
-    
   return (
-    <StyledForm onSubmit={this.handleSubmit}>
+    <StyledForm onSubmit={handleSubmit}>
         <StyledLabel>
           Name:
-        <StyledInput value={name} onChange={this.handleChangeInput}
+        <StyledInput value={state.name} onChange={handleChangeInput}
           type="text" name="name" required />
         </StyledLabel>
 
         <StyledLabel>
         Contacts
-        <StyledInput value={number} onChange={this.handleChangeInput}
+        <StyledInput value={state.number} onChange={handleChangeInput}
           type='tel' name='number' required />
         </StyledLabel>
         <StyledButton>Add contact</StyledButton>
       </StyledForm>
   )
-  }
- 
 }
